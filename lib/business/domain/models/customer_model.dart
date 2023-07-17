@@ -4,7 +4,7 @@ import 'package:flutter/material.dart' show immutable;
 class Customer {
   final String id;
   final String message;
-  final String noOfNotification;
+  final int noOfNotification;
   const Customer({
     required this.id,
     required this.message,
