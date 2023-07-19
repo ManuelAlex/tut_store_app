@@ -31,5 +31,5 @@ class LoginUseCaseInput {
   final String email;
   final String password;
 
-  const LoginUseCaseInput(this.email, this.password);
+  const LoginUseCaseInput({required this.email, required this.password});
 }

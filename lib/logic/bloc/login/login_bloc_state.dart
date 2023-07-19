@@ -1,44 +1,65 @@
-abstract class LoginBlocState {
-  String email;
-  String password;
-  LoginBlocState({
-    required this.email,
+class LoginState {
+  bool isLoading;
+  String? userName;
+  String? password;
+  String? errorMessage;
+  bool? isValidUserName;
+  bool? isValidPassword;
+  LoginState({
+    required this.isLoading,
+    required this.userName,
     required this.password,
+    required this.isValidUserName,
+    required this.isValidPassword,
+    required this.errorMessage,
   });
-}
+  LoginState.initial()
+      : isLoading = false,
+        userName = null,
+        password = null,
+        isValidUserName = null,
+        isValidPassword = null,
+        errorMessage = null;
 
-class InitialLoginBlocState extends LoginBlocState {
-  InitialLoginBlocState()
-      : super(
-          email: "",
-          password: "",
-        );
-}
+  LoginState copyWithIsloading(bool isLoading) => LoginState(
+        isLoading: isLoading,
+        password: password,
+        userName: userName,
+        isValidPassword: isValidPassword,
+        isValidUserName: isValidUserName,
+        errorMessage: errorMessage,
+      );
 
-class IsValidEmailBlocState extends LoginBlocState {
-  IsValidEmailBlocState({
-    required String email,
-  }) : super(
-          email: email,
-          password: "",
-        );
-}
+  @override
+  String toString() => {
+        "isLoading": isLoading,
+        "password": password,
+        "userName": userName,
+        "isValidPassword": isValidPassword,
+        "isValidUserName": isValidUserName,
+        "errorMessage": errorMessage,
+      }.toString();
 
-class IsValidPasswordBlocState extends LoginBlocState {
-  IsValidPasswordBlocState({
-    required String password,
-  }) : super(
-          password: password,
-          email: "",
-        );
-}
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
 
-class LoginBlocBlocState extends LoginBlocState {
-  LoginBlocBlocState({
-    required String password,
-    required String email,
-  }) : super(
-          password: password,
-          email: email,
-        );
+    return other is LoginState &&
+        other.isLoading == isLoading &&
+        other.userName == userName &&
+        other.password == password &&
+        other.isValidUserName == isValidUserName &&
+        other.isValidPassword == isValidPassword &&
+        other.errorMessage == errorMessage;
+  }
+
+  @override
+  int get hashCode {
+    return isLoading.hashCode ^
+        userName.hashCode ^
+        password.hashCode ^
+        isValidUserName.hashCode ^
+        isValidPassword.hashCode ^
+        errorMessage.hashCode;
+  }
 }

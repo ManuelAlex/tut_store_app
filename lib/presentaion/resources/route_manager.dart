@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tut_store_app/presentaion/resources/strings_manager.dart';
+import 'package:tut_store_app/presentaion/views/login/login_view.dart';
 import 'package:tut_store_app/presentaion/views/onboarding/onbording_view.dart';
 import 'package:tut_store_app/presentaion/views/splash/splash_view.dart';
 
@@ -18,8 +19,8 @@ class RouteGenerator {
     switch (routeSettings.name) {
       case Routes.splashRoute:
         return MaterialPageRoute(builder: (_) => const SplashView());
-      // case Routes.loginRoute:
-      //   return MaterialPageRoute(builder: (_) => const SizedBox());
+      case Routes.loginRoute:
+        return MaterialPageRoute(builder: (_) => const LoginView());
       case Routes.onBoardingRoute:
         return MaterialPageRoute(builder: (_) => const OnBoardingView());
       // case Routes.registerRoute:
