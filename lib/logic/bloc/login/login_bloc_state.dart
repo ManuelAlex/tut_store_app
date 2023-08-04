@@ -5,6 +5,7 @@ class LoginState {
   String? errorMessage;
   bool? isValidUserName;
   bool? isValidPassword;
+
   LoginState({
     required this.isLoading,
     required this.userName,

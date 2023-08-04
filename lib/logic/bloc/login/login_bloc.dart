@@ -18,6 +18,7 @@ class LoginBloc extends Bloc<BaseLoginEvent, LoginState> {
   }) : super(
           LoginState.initial(),
         ) {
+    on<LoginResetEvent>((event, emit) => emit(LoginState.initial()));
     on<UserNameEvent>(
       (event, emit) {
         //if we return true that username is valid
@@ -29,7 +30,7 @@ class LoginBloc extends Bloc<BaseLoginEvent, LoginState> {
                 password: state.password,
                 isValidUserName: true,
                 isValidPassword: state.isValidPassword,
-                errorMessage: validUsername),
+                errorMessage: null),
           );
         } else {
           //if we return false that username is valid
@@ -40,7 +41,7 @@ class LoginBloc extends Bloc<BaseLoginEvent, LoginState> {
                 password: state.password,
                 isValidUserName: false,
                 isValidPassword: state.isValidPassword,
-                errorMessage: inValidUsername),
+                errorMessage: null),
           );
         }
       },
@@ -56,7 +57,7 @@ class LoginBloc extends Bloc<BaseLoginEvent, LoginState> {
                 password: event.password,
                 isValidUserName: state.isValidUserName,
                 isValidPassword: true,
-                errorMessage: validPassword),
+                errorMessage: null),
           );
         } else {
           emit(
@@ -66,7 +67,7 @@ class LoginBloc extends Bloc<BaseLoginEvent, LoginState> {
                 password: event.password,
                 isValidUserName: state.isValidUserName,
                 isValidPassword: false,
-                errorMessage: inValidPassword),
+                errorMessage: null),
           );
         }
       },

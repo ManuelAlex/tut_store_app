@@ -46,6 +46,7 @@ dependencies:
   shared_preferences: ^2.2.0
   device_info_plus: ^9.0.2
   get_it: ^7.6.0
+  lottie: ^2.5.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -75,6 +76,7 @@ flutter:
   assets:
     - assets/images/splash_logo.png
     - assets/images/
+    - assets/json/
     
 
   # An image asset can refer to one or more resolution-specific "variants", see

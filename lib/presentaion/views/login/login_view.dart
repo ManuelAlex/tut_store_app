@@ -5,6 +5,7 @@ import 'package:tut_store_app/business/domain/usecases/login_usecase.dart';
 import 'package:tut_store_app/logic/bloc/login/login_bloc.dart';
 import 'package:tut_store_app/logic/bloc/login/login_bloc_event.dart';
 import 'package:tut_store_app/logic/bloc/login/login_bloc_state.dart';
+import 'package:tut_store_app/presentaion/common/state_renderer/state_renderer.dart';
 import 'package:tut_store_app/presentaion/resources/assets_manager.dart';
 import 'package:tut_store_app/presentaion/resources/color_manager.dart';
 import 'package:tut_store_app/presentaion/resources/route_manager.dart';
@@ -44,130 +45,161 @@ class _LoginViewState extends State<LoginView> {
         backgroundColor: ColorManager.white,
         body: BlocBuilder<LoginBloc, LoginState>(
           builder: (context, loginState) {
-            final isValid = loginState.isValidUserName == true &&
-                loginState.isValidPassword == true;
-            return Container(
-                padding: const EdgeInsets.only(top: AppPadding.p100),
-                child: SingleChildScrollView(
-                  child: Form(
-                    key: formKey,
-                    child: Column(
-                      children: [
-                        const Image(image: AssetImage(ImageAssets.splashLogo)),
-                        const SizedBox(height: AppSize.s28),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: AppPadding.p28, right: AppPadding.p28),
-                          child: TextFormField(
-                            onChanged: (text) {
-                              BlocProvider.of<LoginBloc>(context).add(
-                                UserNameEvent(
-                                  userName: text,
-                                ),
-                              );
-                            },
-                            keyboardType: TextInputType.emailAddress,
-                            controller: userNameTextController,
-                            decoration: InputDecoration(
-                                hintText: AppStrings.username,
-                                labelText: AppStrings.username,
-                                //TODO:
-                                errorText: (loginState.isValidUserName ?? true)
-                                    ? null
-                                    : AppStrings.usernameError),
-                          ),
-                        ),
-                        const SizedBox(height: AppSize.s28),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: AppPadding.p28, right: AppPadding.p28),
-                          child: TextFormField(
-                            onChanged: (text) {
-                              BlocProvider.of<LoginBloc>(context).add(
-                                PasswordEvent(
-                                  password: text,
-                                ),
-                              );
-                            },
-                            keyboardType: TextInputType.visiblePassword,
-                            controller: passwordTextController,
-                            decoration: InputDecoration(
-                                hintText: AppStrings.password,
-                                labelText: AppStrings.password,
-                                //TODO:
-                                errorText: (loginState.isValidPassword ?? true)
-                                    ? null
-                                    : AppStrings.passwordError),
-                          ),
-                        ),
-                        const SizedBox(height: AppSize.s28),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: AppPadding.p28, right: AppPadding.p28),
-                          child: SizedBox(
-                            width: double.infinity,
-                            height: AppSize.s40,
-                            child: ElevatedButton(
-                                style: Theme.of(context)
-                                    .elevatedButtonTheme
-                                    .style!
-                                    .copyWith(
-                                        backgroundColor: isValid
-                                            ? MaterialStatePropertyAll(
-                                                ColorManager.primary)
-                                            : MaterialStatePropertyAll(
-                                                ColorManager.grey)),
-                                //TODO:
-                                onPressed: () {
-                                  if (isValid) {
-                                    // Dispatch the LoginEvent with username and password
-                                    BlocProvider.of<LoginBloc>(context).add(
-                                      LoginEvent(
-                                        userName: userNameTextController.text,
-                                        password: passwordTextController.text,
-                                      ),
-                                    );
-                                  }
+            final isValid = (loginState.isValidUserName == true &&
+                    loginState.isValidPassword == true) &&
+                (loginState.isValidUserName != null &&
+                    loginState.isValidPassword != null);
+            return Stack(
+              children: [
+                Container(
+                    padding: const EdgeInsets.only(top: AppPadding.p100),
+                    child: SingleChildScrollView(
+                      child: Form(
+                        key: formKey,
+                        child: Column(
+                          children: [
+                            const Image(
+                                image: AssetImage(ImageAssets.splashLogo)),
+                            const SizedBox(height: AppSize.s28),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: AppPadding.p28, right: AppPadding.p28),
+                              child: TextFormField(
+                                onChanged: (text) {
+                                  BlocProvider.of<LoginBloc>(context).add(
+                                    UserNameEvent(
+                                      userName: text,
+                                    ),
+                                  );
                                 },
-                                child: const Text(AppStrings.login)),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            top: AppPadding.p8,
-                            left: AppPadding.p28,
-                            right: AppPadding.p28,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                      context, Routes.forgotPasswordRoute);
-                                },
-                                child: Text(AppStrings.forgetPassword,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineMedium),
+                                keyboardType: TextInputType.emailAddress,
+                                controller: userNameTextController,
+                                decoration: InputDecoration(
+                                    hintText: AppStrings.username,
+                                    labelText: AppStrings.username,
+                                    errorText:
+                                        (loginState.isValidUserName ?? true)
+                                            ? null
+                                            : AppStrings.usernameError),
                               ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                      context, Routes.registerRoute);
+                            ),
+                            const SizedBox(height: AppSize.s28),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: AppPadding.p28, right: AppPadding.p28),
+                              child: TextFormField(
+                                onChanged: (text) {
+                                  BlocProvider.of<LoginBloc>(context).add(
+                                    PasswordEvent(
+                                      password: text,
+                                    ),
+                                  );
                                 },
-                                child: Text(AppStrings.registerText,
+                                keyboardType: TextInputType.visiblePassword,
+                                controller: passwordTextController,
+                                decoration: InputDecoration(
+                                    hintText: AppStrings.password,
+                                    labelText: AppStrings.password,
+                                    errorText:
+                                        (loginState.isValidPassword ?? true)
+                                            ? null
+                                            : AppStrings.passwordError),
+                              ),
+                            ),
+                            const SizedBox(height: AppSize.s28),
+                            if (loginState.errorMessage != null)
+                              Text(loginState.errorMessage!),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: AppPadding.p28, right: AppPadding.p28),
+                              child: SizedBox(
+                                width: double.infinity,
+                                height: AppSize.s40,
+                                child: ElevatedButton(
                                     style: Theme.of(context)
-                                        .textTheme
-                                        .headlineMedium),
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ));
+                                        .elevatedButtonTheme
+                                        .style!
+                                        .copyWith(
+                                            backgroundColor: isValid
+                                                ? MaterialStatePropertyAll(
+                                                    ColorManager.primary)
+                                                : MaterialStatePropertyAll(
+                                                    ColorManager.grey)),
+                                    onPressed: () {
+                                      if (isValid) {
+                                        // Dispatch the LoginEvent with username and password
+                                        BlocProvider.of<LoginBloc>(context).add(
+                                          LoginEvent(
+                                            userName: userNameTextController
+                                                .text
+                                                .trim(),
+                                            password: passwordTextController
+                                                .text
+                                                .trim(),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    child: const Text(AppStrings.login)),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                top: AppPadding.p8,
+                                left: AppPadding.p28,
+                                right: AppPadding.p28,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, Routes.forgotPasswordRoute);
+                                    },
+                                    child: Text(AppStrings.forgetPassword,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineMedium),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, Routes.registerRoute);
+                                    },
+                                    child: Text(AppStrings.registerText,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineMedium),
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    )),
+                if (loginState.isLoading == true ||
+                    loginState.errorMessage != null)
+                  Expanded(
+                      child: Container(
+                          color: ColorManager.black.withOpacity(0.5))),
+                if (loginState.isLoading == true)
+                  const StateRenderer(
+                      retryActionFunction: null,
+                      message: AppStrings.loading,
+                      stateRendererType: StateRendererType.popUpLoadingState),
+                if (loginState.errorMessage != null)
+                  StateRenderer(
+                      message: loginState.errorMessage!,
+                      stateRendererType: StateRendererType.popUpErrorState,
+                      retryActionFunction: () {
+                        BlocProvider.of<LoginBloc>(context)
+                            .add(LoginResetEvent());
+                      }),
+              ],
+            );
           },
         ),
       ),

@@ -17,7 +17,7 @@ class PasswordEvent implements BaseLoginEvent {
     required this.password,
   });
   // checking if the password  is greater than 6 characters
-  bool isValidPassword({required String password}) => password.length > 6;
+  bool isValidPassword({required String password}) => password.length > 5;
 }
 
 class LoginEvent implements BaseLoginEvent {
@@ -28,3 +28,29 @@ class LoginEvent implements BaseLoginEvent {
     required this.userName,
   });
 }
+
+class LoginResetEvent implements BaseLoginEvent {
+  LoginResetEvent();
+}
+// {
+//     "email":"manuel",
+//     "password":"123456",
+//     "imei":"123",
+//     "deviceType":"android"
+// }
+// {
+//     "status":0,
+//     "message":"success",
+//     "customer":{
+//         "id":"12345678",
+//         "name":"manuel",
+//         "numOfNotifications":12
+        
+//     },
+//     "contact":{
+//         "phone":"manuel",
+//         "link":"manuel@faccebook.com",
+//         "mail":"manuel@gmail.com"
+        
+//     }
+// }
